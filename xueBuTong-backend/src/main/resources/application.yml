@@ -11,4 +11,42 @@ spring:
     username: root
     password: 1234
     url: jdbc:mysql://localhost:3306
-
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    enable-sql-runner: true
+    db-config:
+      logic-delete-field: isDelete
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+knife4j:
+  enable: true
+  openapi:
+    title: 接口文档
+    description: "`我是测试`,**你知道吗**
+    # aaa"
+    email: 173192386@qq.com
+    concat: achao
+#    url: https://docs.xiaominfo.com
+    version: v1.0
+    license: Apache 2.0
+#    license-url: https://stackoverflow.com/
+#    terms-of-service-url: https://stackoverflow.com/
+    group:
+      default:
+        group-name: 通用
+        api-rule: package
+        api-rule-resources:
+          - com.cc.xuebutongbackend.common.controller
+      user:
+        group-name: 用户
+        api-rule: package
+        api-rule-resources:
+          - com.cc.xuebutongbackend.user.controller
+      file:
+        group-name: 文件
+        api-rule: package
+        api-rule-resources:
+          - com.cc.xuebutongbackend.file.controller
