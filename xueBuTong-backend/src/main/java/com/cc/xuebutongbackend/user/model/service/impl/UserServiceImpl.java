@@ -125,6 +125,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 //        );
         return currentUser;
     }
+
+    @Override
+    public String userLogout(HttpServletRequest request) {
+        // 判断是否已经登录
+        Object userObj = request.getSession().getAttribute(UserStatus.LOGIN_USER);
+        User currentUser = (User) userObj;
+        ThrowUtils.throwIf(
+                currentUser == null || currentUser.getId() == null,
+                ErrorCode.NOT_LOGIN_ERROR, "未登录"
+        );
+        // 移除
+        request.getSession().removeAttribute(UserStatus.LOGIN_USER);
+        return UserStatus.SAY_GOOD_BY;
+    }
 }
 
 

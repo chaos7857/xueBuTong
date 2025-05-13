@@ -22,7 +22,7 @@ public class UserController {
     UserServiceImpl userService;
 
     @PostMapping("/register")
-    public BaseResponse<Long> register(@RequestBody RegisterRequest registerRequest) {
+    public BaseResponse<Long> userRegister(@RequestBody RegisterRequest registerRequest) {
         ThrowUtils.throwIf(registerRequest==null, ErrorCode.PARAMS_ERROR);
         String userAccount = registerRequest.getUserAccount();
         String userPassword = registerRequest.getUserPassword();
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public BaseResponse<LoginUserVO> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+    public BaseResponse<LoginUserVO> userLogin(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
         ThrowUtils.throwIf(loginRequest==null, ErrorCode.PARAMS_ERROR);
         String userAccount = loginRequest.getUserAccount();
         String userPassword = loginRequest.getPassword();
@@ -40,10 +40,16 @@ public class UserController {
         return ResultUtils.success(loginUserVO);
     }
 
-    @GetMapping("/get/user")
+    @GetMapping("/me")
     public BaseResponse<LoginUserVO> getLoginUser(HttpServletRequest httpServletRequest){
         User user = userService.getLoginUser(httpServletRequest);
         LoginUserVO loginUserVO = UserUtil.getLoginUserVO(user);
         return ResultUtils.success(loginUserVO);
+    }
+
+    @GetMapping("/logout")
+    public BaseResponse<String> userLogout(HttpServletRequest httpServletRequest){
+        String result = userService.userLogout(httpServletRequest);
+        return ResultUtils.success(result);
     }
 }
