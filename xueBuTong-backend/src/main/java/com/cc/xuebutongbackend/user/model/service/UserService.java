@@ -1,7 +1,10 @@
 package com.cc.xuebutongbackend.user.model.service;
 
-import com.cc.xuebutongbackend.user.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cc.xuebutongbackend.user.model.entity.User;
+import com.cc.xuebutongbackend.user.model.vo.LoginUserVO;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
 * @author Administrator
@@ -9,5 +12,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-05-12 08:21:33
 */
 public interface UserService extends IService<User> {
-    public Long UserRegister(String username, String password, String confirmPassword);
+    public Long userRegister(String username, String password, String confirmPassword);
+    public LoginUserVO userLogin(String username, String password, HttpServletRequest request);
 }

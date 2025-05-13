@@ -3,27 +3,34 @@ package com.cc.xuebutongbackend.user.model.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cc.xuebutongbackend.common.exception.BusinessException;
 import com.cc.xuebutongbackend.common.exception.ErrorCode;
 import com.cc.xuebutongbackend.common.utils.ThrowUtils;
 import com.cc.xuebutongbackend.user.constant.UserDefault;
 import com.cc.xuebutongbackend.user.constant.UserRole;
+import com.cc.xuebutongbackend.user.constant.UserStatus;
 import com.cc.xuebutongbackend.user.model.entity.User;
 import com.cc.xuebutongbackend.user.model.mapper.UserMapper;
 import com.cc.xuebutongbackend.user.model.service.UserService;
+import com.cc.xuebutongbackend.user.model.vo.LoginUserVO;
 import com.cc.xuebutongbackend.user.utils.UserUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
 * @author Administrator
 * @description 针对表【user】的数据库操作Service实现
 * @createDate 2025-05-12 08:21:33
 */
+@Slf4j
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService{
 
     @Override
-    public Long UserRegister(String userAccount, String userPassword, String confirmPassword) {
+    public Long userRegister(String userAccount, String userPassword, String confirmPassword) {
         // 1. 校验参数
         ThrowUtils.throwIf(
                 StrUtil.hasBlank(userAccount, userPassword, confirmPassword),
@@ -66,6 +73,38 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 ErrorCode.SYSTEM_ERROR,"注册失败，数据库错误"
         );
         return user.getId();
+    }
+
+    @Override
+    public LoginUserVO userLogin(String userAccount, String userPassword, HttpServletRequest request) {
+        // 1. 校验
+        ThrowUtils.throwIf(
+                StrUtil.hasBlank(userAccount, userPassword),
+                ErrorCode.PARAMS_ERROR, "参数为空"
+        );
+        ThrowUtils.throwIf (
+                userAccount.length() < 4,
+                ErrorCode.PARAMS_ERROR, "用户账号错误"
+        );
+        ThrowUtils.throwIf(
+                userPassword.length() < 8,
+                ErrorCode.PARAMS_ERROR, "用户密码错误"
+        );
+        // 2. 对用户传递的密码进行加密
+        String encodedPassword = UserUtil.getEncodedPassword(userPassword);
+        // 3. 查询数据库中的用户是否存在
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userAccount", userAccount);
+        queryWrapper.eq("userPassword", encodedPassword);
+        User user = this.baseMapper.selectOne(queryWrapper);
+        // 不存在，抛异常
+        if (user == null) {
+            log.info("user login failed, userAccount cannot match userPassword");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在或者密码错误");
+        }
+        // 4. 保存用户的登录态
+        request.getSession().setAttribute(UserStatus.LOGINUSER, user);
+        return UserUtil.getLoginUserVO(user);
     }
 }
 
