@@ -64,7 +64,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = new User();
         user.setUserAccount(userAccount);
         user.setUserPassword(encodedPassword);
-        user.setUserName(UserDefault.USERNAME);
+        user.setUserName(UserDefault.USER_NAME);
         user.setUserRole(UserRole.ROLE_USER);
 
         boolean saveRes = this.save(user);
@@ -103,8 +103,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在或者密码错误");
         }
         // 4. 保存用户的登录态
-        request.getSession().setAttribute(UserStatus.LOGINUSER, user);
+        request.getSession().setAttribute(UserStatus.LOGIN_USER, user);
         return UserUtil.getLoginUserVO(user);
+    }
+
+    @Override
+    public User getLoginUser(HttpServletRequest request) {
+        // 判断是否已经登录
+        Object userObj = request.getSession().getAttribute(UserStatus.LOGIN_USER);
+        User currentUser = (User) userObj;
+        ThrowUtils.throwIf(
+                currentUser == null || currentUser.getId() == null,
+                ErrorCode.NOT_LOGIN_ERROR
+        );
+        // 从数据库中查询（追求性能的话可以注释，直接返回上述结果）
+//        Long userId = currentUser.getId();
+//        currentUser = this.getById(userId);
+//        ThrowUtils.throwIf(
+//                currentUser == null,
+//                ErrorCode.NOT_LOGIN_ERROR
+//        );
+        return currentUser;
     }
 }
 

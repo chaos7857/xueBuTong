@@ -6,12 +6,11 @@ import com.cc.xuebutongbackend.common.utils.ResultUtils;
 import com.cc.xuebutongbackend.common.utils.ThrowUtils;
 import com.cc.xuebutongbackend.user.model.dto.LoginRequest;
 import com.cc.xuebutongbackend.user.model.dto.RegisterRequest;
+import com.cc.xuebutongbackend.user.model.entity.User;
 import com.cc.xuebutongbackend.user.model.service.impl.UserServiceImpl;
 import com.cc.xuebutongbackend.user.model.vo.LoginUserVO;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.cc.xuebutongbackend.user.utils.UserUtil;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -41,4 +40,10 @@ public class UserController {
         return ResultUtils.success(loginUserVO);
     }
 
+    @GetMapping("/get/user")
+    public BaseResponse<LoginUserVO> getLoginUser(HttpServletRequest httpServletRequest){
+        User user = userService.getLoginUser(httpServletRequest);
+        LoginUserVO loginUserVO = UserUtil.getLoginUserVO(user);
+        return ResultUtils.success(loginUserVO);
+    }
 }
