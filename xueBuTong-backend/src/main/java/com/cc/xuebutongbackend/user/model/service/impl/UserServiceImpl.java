@@ -139,6 +139,42 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         request.getSession().removeAttribute(UserStatus.LOGIN_USER);
         return UserStatus.SAY_GOOD_BY;
     }
+
+    @Override
+    public Long addUser(String userAccount, String userName) {
+        // 1. 校验参数
+        ThrowUtils.throwIf(
+                StrUtil.hasBlank(userAccount, userName),
+                ErrorCode.PARAMS_ERROR,"参数为空"
+        );
+        ThrowUtils.throwIf(
+                userAccount.length()<4,
+                ErrorCode.PARAMS_ERROR,"账号过短"
+        );
+        // 是否已存在
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("userAccount", userAccount);
+        Long count = this.baseMapper.selectCount(userQueryWrapper);
+        ThrowUtils.throwIf(
+                count>0,
+                ErrorCode.PARAMS_ERROR,"账户已存在"
+        );
+
+        String encodedPassword = UserUtil.getEncodedPassword(UserDefault.USER_PASSWORD);
+
+        User user = new User();
+        user.setUserAccount(userAccount);
+        user.setUserPassword(encodedPassword);
+        user.setUserName(userName);
+        user.setUserRole(UserRole.ROLE_USER);
+
+        boolean saveRes = this.save(user);
+        ThrowUtils.throwIf(
+                !saveRes,
+                ErrorCode.SYSTEM_ERROR,"注册失败，数据库错误"
+        );
+        return user.getId();
+    }
 }
 
 
