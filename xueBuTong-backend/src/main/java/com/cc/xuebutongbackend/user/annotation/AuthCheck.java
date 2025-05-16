@@ -1,4 +1,4 @@
-package com.cc.xuebutongbackend.common.annotation;
+package com.cc.xuebutongbackend.user.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

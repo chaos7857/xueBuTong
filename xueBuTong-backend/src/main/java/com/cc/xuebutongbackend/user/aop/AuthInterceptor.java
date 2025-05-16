@@ -1,6 +1,6 @@
-package com.cc.xuebutongbackend.common.aop;
+package com.cc.xuebutongbackend.user.aop;
 
-import com.cc.xuebutongbackend.common.annotation.AuthCheck;
+import com.cc.xuebutongbackend.user.annotation.AuthCheck;
 import com.cc.xuebutongbackend.common.exception.ErrorCode;
 import com.cc.xuebutongbackend.common.utils.ThrowUtils;
 import com.cc.xuebutongbackend.user.constant.UserStatus;

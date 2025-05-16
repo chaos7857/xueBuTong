@@ -40,6 +40,12 @@ public class UserController {
         return ResultUtils.success(loginUserVO);
     }
 
+    @GetMapping("/logout")
+    public BaseResponse<String> userLogout(HttpServletRequest httpServletRequest){
+        String result = userService.userLogout(httpServletRequest);
+        return ResultUtils.success(result);
+    }
+
     @GetMapping("/me")
     public BaseResponse<LoginUserVO> getLoginUser(HttpServletRequest httpServletRequest){
         User user = userService.getLoginUser(httpServletRequest);
@@ -47,9 +53,6 @@ public class UserController {
         return ResultUtils.success(loginUserVO);
     }
 
-    @GetMapping("/logout")
-    public BaseResponse<String> userLogout(HttpServletRequest httpServletRequest){
-        String result = userService.userLogout(httpServletRequest);
-        return ResultUtils.success(result);
-    }
+    /*
+    * TODO：缺一个个人信息修改，其中的头像上传先缓一下，考虑下是存本地还是cos还是其他的*/
 }
