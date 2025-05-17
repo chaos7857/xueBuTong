@@ -14,7 +14,7 @@
       </a-layout-content>
 
       <a-layout-footer class="footer">
-        <a href="https://github.com/chaos7857/xueBuTong" target="_blank"> welcome to star </a>
+        <a href="https://beian.miit.gov.cn/" target="_blank">浙ICP备2025170317号-1</a>
       </a-layout-footer>
     </a-layout>
   </div>
