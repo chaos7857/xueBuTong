@@ -11,6 +11,10 @@ spring:
     username: root
     password: 1234
     url: jdbc:mysql://localhost:3306/xueBuTong
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
@@ -21,6 +25,7 @@ mybatis-plus:
       logic-delete-field: isDelete
       logic-delete-value: 1
       logic-not-delete-value: 0
+
 knife4j:
   enable: true
   openapi:
