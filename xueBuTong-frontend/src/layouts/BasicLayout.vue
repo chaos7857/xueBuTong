@@ -15,6 +15,9 @@
 
       <a-layout-footer class="footer">
         <a href="https://beian.miit.gov.cn/" target="_blank">浙ICP备2025170317号-1</a>
+        <br>
+        <img src="../assets/备案图标.png" alt="备案图标" id="beian"/>
+        <a href="https://beian.mps.gov.cn/#/query/webSearch?code=34011102003716" rel="noreferrer" target="_blank">皖公网安备34011102003716号</a>
       </a-layout-footer>
     </a-layout>
   </div>
@@ -43,6 +46,13 @@
     left: 0;
     right: 0;
     text-align: center;
+
+
+    #beian {
+      width: 16px;
+      margin: 0 5px;
+      display: inline;
+    }
   }
 }
 </style>
