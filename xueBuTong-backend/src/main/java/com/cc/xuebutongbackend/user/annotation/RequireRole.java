@@ -7,9 +7,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AuthCheck {
+public @interface RequireRole {
     /**
      * 必须具有某个角色
      **/
-    String mustRole() default "";
+    String userRole() default "";
 }

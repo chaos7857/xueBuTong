@@ -18,6 +18,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!--测试热加载依赖,实测用处不大，只有debug可用-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-devtools</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+
         <!-- 切面 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -1,10 +1,11 @@
 package com.cc.xuebutongbackend.user.aop;
 
-import com.cc.xuebutongbackend.user.annotation.AuthCheck;
+import com.cc.xuebutongbackend.user.annotation.RequireRole;
 import com.cc.xuebutongbackend.common.exception.ErrorCode;
 import com.cc.xuebutongbackend.common.utils.ThrowUtils;
 import com.cc.xuebutongbackend.user.constant.UserStatus;
 import com.cc.xuebutongbackend.user.model.entity.User;
+import com.cc.xuebutongbackend.user.model.enums.UserRoleEnum;
 import com.cc.xuebutongbackend.user.model.vo.LoginUserVO;
 import com.cc.xuebutongbackend.user.utils.UserUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -21,14 +22,12 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class AuthInterceptor {
 
-    @Around("@annotation(authCheck)")
-    public Object authCheck(ProceedingJoinPoint joinPoint, AuthCheck authCheck) throws Throwable {
-        String mustRole = authCheck.mustRole();
-        // 没有指定就放行
-        if (mustRole==null){
-            return joinPoint.proceed();
-        }
-        // 指定了得判断是否有权限，这里先全都抛出
+    @Around("@annotation(requireRole)")
+    public Object authCheck(ProceedingJoinPoint joinPoint, RequireRole requireRole) throws Throwable {
+        String mustRole = requireRole.userRole();
+        UserRoleEnum mustRoleEnum = UserRoleEnum.getEnumByValue(mustRole);
+        //=================================================================================================
+        // 确保已经登录
         // 获取当前请求用户
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
@@ -36,8 +35,16 @@ public class AuthInterceptor {
 
         // 没登录
         ThrowUtils.throwIf(attribute == null,
-                ErrorCode.NO_AUTH_ERROR
+                ErrorCode.NOT_LOGIN_ERROR
         );
+
+        //=================================================================================================
+        // 没有指定、指定了非法用户等级，应当确保最低已登录即可
+        // 指定了得判断是否有权限
+        if (mustRoleEnum == null) {
+            return  joinPoint.proceed();
+        }
+        // 对于登录用户获取用户角色
         LoginUserVO user = UserUtil.getLoginUserVO((User) attribute);
         String userRole = user.getUserRole();
 

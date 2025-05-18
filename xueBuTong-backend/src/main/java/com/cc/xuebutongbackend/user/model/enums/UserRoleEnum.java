@@ -10,6 +10,8 @@ public enum UserRoleEnum {
 
     private final String zh;
     private final String value;
+    /*
+    * TODO：可以再加一个数字，用来比较权限，方便更多权限用户扩展*/
 
     UserRoleEnum(String zh, String value) {
         this.zh = zh;

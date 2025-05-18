@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.xuebutongbackend.file.model.mapper.FileMapper">
+
+    <resultMap id="BaseResultMap" type="com.cc.xuebutongbackend.file.model.entity.File">
+            <id property="id" column="id" />
+            <result property="url" column="url" />
+            <result property="fileName" column="fileName" />
+            <result property="fileType" column="fileType" />
+            <result property="fileSize" column="fileSize" />
+            <result property="fileIntroduction" column="fileIntroduction" />
+            <result property="fileTags" column="fileTags" />
+            <result property="userId" column="userId" />
+            <result property="createTime" column="createTime" />
+            <result property="updateTime" column="updateTime" />
+            <result property="isDelete" column="isDelete" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,url,fileName,fileType,fileSize,fileIntroduction,
+        fileTags,userId,createTime,updateTime,isDelete
+    </sql>
+</mapper>

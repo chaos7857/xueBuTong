@@ -4,19 +4,23 @@ import com.cc.xuebutongbackend.common.exception.ErrorCode;
 import com.cc.xuebutongbackend.common.model.dto.BaseResponse;
 import com.cc.xuebutongbackend.common.utils.ResultUtils;
 import com.cc.xuebutongbackend.common.utils.ThrowUtils;
+import com.cc.xuebutongbackend.file.model.service.FileService;
 import com.cc.xuebutongbackend.file.utils.FileUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import com.cc.xuebutongbackend.user.annotation.RequireRole;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 
 @RequestMapping("/file")
 @RestController
 public class FileDemoController {
+    @Resource
+    FileService fileService;
+
+    @RequireRole
     @PostMapping("/upload/demo/local")
     public BaseResponse<String> uploadFile(@RequestPart("file") MultipartFile file) {
         String originalFilename = file.getOriginalFilename();// "1.png"

@@ -7,7 +7,7 @@ import com.cc.xuebutongbackend.common.model.dto.BaseResponse;
 import com.cc.xuebutongbackend.common.model.dto.PageRequest;
 import com.cc.xuebutongbackend.common.utils.ResultUtils;
 import com.cc.xuebutongbackend.common.utils.ThrowUtils;
-import com.cc.xuebutongbackend.user.annotation.AuthCheck;
+import com.cc.xuebutongbackend.user.annotation.RequireRole;
 import com.cc.xuebutongbackend.user.constant.UserRole;
 import com.cc.xuebutongbackend.user.model.dto.UserAddRequest;
 import com.cc.xuebutongbackend.user.model.entity.User;
@@ -26,7 +26,7 @@ public class AdminController {
     @Resource
     UserServiceImpl userService;
 
-    @AuthCheck(mustRole = UserRole.ROLE_ADMIN)
+    @RequireRole(userRole = UserRole.ROLE_ADMIN)
     @PostMapping("/add")
     public BaseResponse<Long> addUser(@RequestBody UserAddRequest user) {
         ThrowUtils.throwIf(BeanUtil.isEmpty(user), ErrorCode.PARAMS_ERROR);
