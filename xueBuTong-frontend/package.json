@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
-    "easy_build":"vite build",
+    "easy_build": "vite build",
     "openapi": "node openapi.config.js",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -15,6 +15,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@umijs/openapi": "^1.13.0",
     "ant-design-vue": "^4.2.6",
     "axios": "^1.9.0",
     "pinia": "^3.0.1",

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { h, ref } from 'vue'
-import { HomeOutlined } from '@ant-design/icons-vue'
+import { HomeOutlined,GithubOutlined } from '@ant-design/icons-vue'
 import { MenuProps } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
@@ -21,7 +21,15 @@ const items = ref<MenuProps['items']>([
   },
   {
     key: 'others',
-    label: h('a', { href: 'https://github.com/chaos7857/xueBuTong', target: '_blank' }, 'star'),
+    icon: () => h(GithubOutlined),
+    label: h(
+      'a',
+      {
+        href: 'https://github.com/chaos7857/xueBuTong',
+        target: '_blank',
+      },
+      'star',
+    ),
     title: 'star',
   },
 ])
@@ -40,11 +48,15 @@ const doMenuClick = ({ key }) => {
     path: key,
   })
 }
+
+const myProfile = ()=>{
+  router.push('/user/me')
+}
 </script>
 
 <template>
-<div id="globalHeader">
-  <a-row :wrap="false">
+  <div id="globalHeader">
+    <a-row :wrap="false">
       <a-col flex="200px">
         <router-link to="/">
           <div class="title-bar">
@@ -53,6 +65,7 @@ const doMenuClick = ({ key }) => {
           </div>
         </router-link>
       </a-col>
+
       <a-col flex="auto">
         <a-menu
           v-model:selectedKeys="current"
@@ -61,9 +74,10 @@ const doMenuClick = ({ key }) => {
           @click="doMenuClick"
         />
       </a-col>
+
       <a-col flex="120px">
         <div class="user-login-status">
-          <div v-if="loginUserStore.loginUser.id">
+          <div v-if="loginUserStore.loginUser.id" @click="myProfile">
             {{ loginUserStore.loginUser.userName ?? '无名' }}
           </div>
           <div v-else>
@@ -72,9 +86,8 @@ const doMenuClick = ({ key }) => {
         </div>
       </a-col>
     </a-row>
-</div>
+  </div>
 </template>
-
 
 <style scoped>
 #globalHeader .title-bar {
